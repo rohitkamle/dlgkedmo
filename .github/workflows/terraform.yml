@@ -129,11 +129,13 @@ jobs:
           
           # get grafana admin password - initial
 
-          echo "grafana server url is http://newgrafana.dlgkedemo.com and ip address is "
+          echo "Grafana server url is http://newgrafana.dlgkedemo.com and ip address is "
           kubectl get services -n ingress-nginx ingress-nginx-controller -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'
 
-
           kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+
+          echo "Promtheus server url to be added as provider in grafana dashboard http://prometheus-server.monitoring.svc.cluster.local , import 6417 number dashboard for kubenetes cluster details"
+
 
           # install nginx web server
           helm upgrade --install nginx ./helm-charts/nginx
