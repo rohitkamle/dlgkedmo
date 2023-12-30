@@ -110,7 +110,6 @@ jobs:
           else
             echo "Namespace '${nsservices}' already exists."
           fi
-          
           # Running helm charts
 
           helm upgrade --install websitesecret ./helm-charts/websitesecret
