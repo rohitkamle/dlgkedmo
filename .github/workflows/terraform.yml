@@ -57,7 +57,7 @@ jobs:
 
 
 
-      # install gcloud sdk to run kubectl and hel commands ..
+      # install gcloud sdk to run kubectl and helm commands ..
 
       - name: 'Setup cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v2'
