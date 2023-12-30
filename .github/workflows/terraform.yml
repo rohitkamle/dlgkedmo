@@ -21,15 +21,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Use Secret in Workflow
-        run: |
-          echo "My secret key is ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }} and ${{ secrets.GCP_SERVICE_ACCOUNT }}"
-
       - id: 'auth'
         uses: 'google-github-actions/auth@v2'
         with:
           token_format: 'access_token'
-          workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}'
+          workload_identity_provider: 'projects/231248354455/locations/global/workloadIdentityPools/dlwifpool/providers/dlwifprovider'
           service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
 
       - uses: hashicorp/setup-terraform@v1
