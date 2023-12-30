@@ -15,6 +15,7 @@ jobs:
     env:
       GCP_REGION: europe-west1
       GKE_CLUSTER_NAME: gke-dlgkedmo-dev
+      TKSTATE_BUCKET_NAME: dlgkedemotfstatebucket
 
 
     steps:
@@ -30,12 +31,10 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v1
       
-
       - name: Terraform Init
         id: init
-        run: terraform init
-        env:
-          TFVARS_PATH: ${{ env.TFVARS_PATH }}
+        run: |
+          terraform init -backend-config="bucket=$TKSTATE_BUCKET_NAME" -backend-config="prefix=terraform/state.tfstate"
 
       - name: Terraform Validate
         run: terraform validate
@@ -52,7 +51,7 @@ jobs:
 
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve -var-file=$TFVARS_PATH
+        run: terraform apply -auto-approve -var-file=$TFVARS_PATH 
         env:
           TFVARS_PATH: ${{ env.TFVARS_PATH }}
 

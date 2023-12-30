@@ -18,14 +18,6 @@ variable "env" {
 }
 
 
-
-variable "tf_bucket_name" {
-  description = "TF State Bucket Name Name"
-  type        = string
-}
-
-
-
 variable "gke_cluster_name" {
   description = "GKE Cluster Name"
   type        = string
