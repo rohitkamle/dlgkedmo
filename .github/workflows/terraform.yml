@@ -15,8 +15,6 @@ jobs:
     env:
       GCP_REGION: europe-west1
       GKE_CLUSTER_NAME: gke-dlgkedmo-dev
-      workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-      service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
 
     steps:
@@ -31,8 +29,8 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           token_format: 'access_token'
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}'
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
 
       - uses: hashicorp/setup-terraform@v1
       
