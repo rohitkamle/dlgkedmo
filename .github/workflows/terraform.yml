@@ -90,8 +90,8 @@ jobs:
           # uncomment below line to install ingress
           helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx
 
-          # Delay for 120 Seconds to make sure the ingress controller is up and running
-          sleep 120
+          # Delay for 90 Seconds to make sure the ingress controller is up and running
+          sleep 90
 
       - name: Deploy K8 Namespace and Services 
         run: |
@@ -127,7 +127,12 @@ jobs:
           # install grafan ingress
           kubectl apply -f ./k8-files/grafana-ingress.yaml
           
-          # get grafana admin password - initia
+          # get grafana admin password - initial
+
+          echo "grafana server url is http://newgrafana.dlgkedemo.com and ip address is "
+          kubectl get services -n ingress-nginx ingress-nginx-controller -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'
+
+
           kubectl get secret --namespace monitor grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 
           # install nginx web server
