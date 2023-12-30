@@ -110,9 +110,25 @@ jobs:
           else
             echo "Namespace '${nsservices}' already exists."
           fi
-
+          
           # Running helm charts
+
           helm upgrade --install websitesecret ./helm-charts/websitesecret
-          helm upgrade --install prometheus ./helm-charts/prometheus
-          helm upgrade --install grafana ./helm-charts/grafana
+
+          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+          helm repo add grafana https://grafana.github.io/helm-charts
+          helm repo update
+          # install prometheus
+          helm install prometheus prometheus-community/prometheus --namespace monitoring
+
+          # install grafana
+          helm install grafana grafana/grafana --namespace monitoring
+
+          # install grafan ingress
+          kubectl apply -f ./k8-files/grafana-ingress.yaml
+          
+          # get grafana admin password - initia
+          kubectl get secret --namespace monitor grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+
+          # install nginx web server
           helm upgrade --install nginx ./helm-charts/nginx
