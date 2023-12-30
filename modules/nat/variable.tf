@@ -4,7 +4,7 @@ variable "name" {
 }
 
 variable "region" {
-  description = "google coregion "
+  description = "google region "
   type        = string
 }
 
