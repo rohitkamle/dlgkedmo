@@ -22,6 +22,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA_
 gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com" --role="roles/iam.serviceAccountTokenCreator"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com" --role="roles/iam.serviceAccountUser"
+gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com" --role="roles/iam.serviceAccountAdmin"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com" --role="roles/storage.admin"
 
@@ -33,8 +34,9 @@ gcloud projects add-iam-policy-binding $PROJECT_ID --member="principalSet://iam.
 # Creat Bucker for storing Terraform State in the Project, need to enable billing account if not enabled..
 gcloud storage buckets create gs://$STORAGE_BUCKET_NAME
 
-#Enable "IAM Service Account Credentials API" 
+#Enable Required APIs 
 gcloud services enable iamcredentials.googleapis.com
+gcloud services enable cloudresourcemanager.googleapis.com
 
 # Below command it get the Workload identity pool name which needs to be added in Github secrets as GCP_WORKLOAD_INDENTITY_PROVIDER
 # EXAMPLE : projects/638663299784/locations/global/workloadIdentityPools/rk-gihub-wif-pool/providers/rk-gihub-wif-pool'

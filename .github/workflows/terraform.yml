@@ -45,13 +45,13 @@ jobs:
         run: echo "TFVARS_PATH=value.tfvars" >> $GITHUB_ENV
 
       - name: Terraform Plan
-        run: terraform plan -var-file=$TFVARS_PATH
+        run: terraform plan -var-file=$TFVARS_PATH -var="gke_cluster_name=$GKE_CLUSTER_NAME"
         env:
           TFVARS_PATH: ${{ env.TFVARS_PATH }}
 
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve -var-file=$TFVARS_PATH 
+        run: terraform apply -auto-approve -var-file=$TFVARS_PATH -var="gke_cluster_name=$GKE_CLUSTER_NAME"
         env:
           TFVARS_PATH: ${{ env.TFVARS_PATH }}
 
@@ -89,6 +89,9 @@ jobs:
 
           # uncomment below line to install ingress
           helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx
+
+          # Delay for 120 Seconds to make sure the ingress controller is up and running
+          sleep 120
 
       - name: Deploy K8 Namespace and Services 
         run: |
