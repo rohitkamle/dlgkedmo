@@ -1,0 +1,116 @@
+name: Terraform GKE
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  terraform:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    env:
+      GCP_REGION: europe-west1
+      GKE_CLUSTER_NAME: gke-dlgkedmo-dev
+
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          token_format: 'access_token'
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - uses: hashicorp/setup-terraform@v1
+      
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+        env:
+          TFVARS_PATH: ${{ env.TFVARS_PATH }}
+
+      - name: Terraform Validate
+        run: terraform validate
+        
+
+
+      - name: Set TFVARS Path
+        run: echo "TFVARS_PATH=value.tfvars" >> $GITHUB_ENV
+
+      - name: Terraform Plan
+        run: terraform plan -var-file=$TFVARS_PATH
+        env:
+          TFVARS_PATH: ${{ env.TFVARS_PATH }}
+
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -var-file=$TFVARS_PATH
+        env:
+          TFVARS_PATH: ${{ env.TFVARS_PATH }}
+
+
+
+      # install gcloud sdk to run kubectl and hel commands ..
+
+      - name: 'Setup cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+
+
+      - name: Configure kubectl
+        run: |
+          gcloud container clusters get-credentials $GKE_CLUSTER_NAME --region $GCP_REGION
+          gcloud components install gke-gcloud-auth-plugin
+
+          
+      - name: Install Helm
+        run: |
+          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+          chmod 700 get_helm.sh
+          ./get_helm.sh
+
+      - name: Install NGINX Ingress Controller
+        run: |
+          helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+          helm repo update
+          nsingress="ingress-nginx"
+          if ! kubectl get namespace "${nsingress}" &> /dev/null; then
+            kubectl create namespace "${nsingress}"
+          else
+            echo "Namespace '${nsingress}' already exists."
+          fi
+
+          # uncomment below line to install ingress
+          helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx
+
+      - name: Deploy K8 Namespace and Services 
+        run: |
+
+          nsmonitoring="monitoring"
+          if ! kubectl get namespace "${nsmonitoring}" &> /dev/null; then
+            kubectl create namespace "${nsmonitoring}"
+          else
+            echo "Namespace '${nsmonitoring}' already exists."
+          fi
+
+
+          nsservices="services"
+          if ! kubectl get namespace "${nsservices}" &> /dev/null; then
+            kubectl create namespace "${nsservices}"
+          else
+            echo "Namespace '${nsservices}' already exists."
+          fi
+
+          # Running helm charts
+          helm upgrade --install websitesecret ./helm-charts/websitesecret
+          helm upgrade --install prometheus ./helm-charts/prometheus
+          helm upgrade --install grafana ./helm-charts/grafana
+          helm upgrade --install nginx ./helm-charts/nginx
