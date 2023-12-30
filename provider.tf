@@ -5,7 +5,7 @@ provider "google" {
 
 terraform {
   backend "gcs" {
-    bucket = "dlgkedemosatf"
+    bucket = var.tf_bucket_name
     prefix = "terraform/state"
   }
   required_providers {
