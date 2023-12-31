@@ -26,8 +26,8 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           token_format: 'access_token'
-          workload_identity_provider: 'projects/231248354455/locations/global/workloadIdentityPools/dlwifpool/providers/dlwifprovider'
-          service_account: 'dlgkedemosatf@fabled-era-408608.iam.gserviceaccount.com'
+          workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}' 
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
 
       - uses: hashicorp/setup-terraform@v1
       

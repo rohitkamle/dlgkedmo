@@ -42,3 +42,4 @@ The deployment is triggered by the GitHub Actions workflow defined in `.github/w
 2. Configures `gcloud` with the provided e Workload Identity Provider and service account.
 3. Authenticates with Google Cloud using the provided Workload Identity Provider.
 4. Initializes and applies the Terraform configuration.
+
