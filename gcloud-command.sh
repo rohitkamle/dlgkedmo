@@ -43,7 +43,7 @@ gcloud services enable cloudresourcemanager.googleapis.com
 # Below command it get the Workload identity pool name which needs to be added in Github secrets as GCP_WORKLOAD_INDENTITY_PROVIDER
 # EXAMPLE : projects/638663299784/locations/global/workloadIdentityPools/rk-gihub-wif-pool/providers/rk-gihub-wif-pool'
 
-GCP_WORKLOAD_INDENTITY_PROVIDER=$(gcloud iam workload-identity-pools providers describe $WIF_PROVIDER_NAME --project $PROJECT_ID --location="global" --workload-identity-pool=$WIF_POOL_NAME --format="value(name)" )
+GCP_WORKLOAD_IDENTITY_PROVIDER=$(gcloud iam workload-identity-pools providers describe $WIF_PROVIDER_NAME --project $PROJECT_ID --location="global" --workload-identity-pool=$WIF_POOL_NAME --format="value(name)" )
 
 # output: projects/717097444127/locations/global/workloadIdentityPools/dlwifpool/providers/dlwifprovider
 
