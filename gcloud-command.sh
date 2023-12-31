@@ -26,6 +26,12 @@ gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA_
 gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com" --role="roles/iam.serviceAccountUser"
 gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com" --role="roles/iam.serviceAccountAdmin"
 
+gcloud service-accounts add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com" --role="roles/iam.serviceAccounts.getAccessToken"
+
+
+# gcloud iam service-accounts add-iam-policy-binding $SA_NAME@$PROJECT_ID.iam.gserviceaccount.com --member=serviceAccount:$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com --role=roles/iam.serviceAccounts.getAccessToken
+
+
 gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com" --role="roles/storage.admin"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com" --role "roles/compute.networkAdmin" 
@@ -33,6 +39,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA_
 PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
 
 gcloud projects add-iam-policy-binding $PROJECT_ID --member="principalSet://iam.googleapis.com/projects/$PROJECT_NUMBER/locations/global/workloadIdentityPools/$WIF_POOL_NAME/*" --role="roles/iam.workloadIdentityUser"
+
 # Creat Bucker for storing Terraform State in the Project, need to enable billing account if not enabled..
 gcloud storage buckets create gs://$STORAGE_BUCKET_NAME
 
@@ -50,10 +57,13 @@ GCP_WORKLOAD_IDENTITY_PROVIDER=$(gcloud iam workload-identity-pools providers de
 # Below command it get the Service Account name which needs to be added in Github secrets as GCP_SERVICE_ACCOUNT
 GCP_SERVICE_ACCOUNT=$(gcloud iam service-accounts describe $SA_NAME@$PROJECT_ID.iam.gserviceaccount.com --project=$PROJECT_ID --format="value(email)")
 
-#output: dlgkedemosatf@dlgkedemo.iam.gserviceaccount.com
+#output: dlgkedemosatf@fabled-era-408608.iam.gserviceaccount.com
 
-echo "GCP_WORKLOAD_INDENTITY_PROVIDER = $GCP_WORKLOAD_INDENTITY_PROVIDER"
+echo "GCP_WORKLOAD_IDENTITY_PROVIDER = $GCP_WORKLOAD_INDENTITY_PROVIDER"
 echo "GCP_SERVICE_ACCOUNT = $GCP_SERVICE_ACCOUNT"
+
+
+
 
 
 
