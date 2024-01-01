@@ -4,7 +4,6 @@ variable "name" {
 }
 
 
-
 variable "cluster_id" {
   description = "Cluster id of the gke cluster"
    type        = string
@@ -15,6 +14,13 @@ variable "node_count" {
    type        = number
    default     = 1
 }
+
+variable "sa_email" {
+  description = "Service Account for Node Group"
+   type        = string
+
+}
+
 
 
 variable "machine_type" {

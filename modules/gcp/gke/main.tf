@@ -8,6 +8,7 @@ resource "google_project_service" "cloud_resource_manager" {
   service = "cloudresourcemanager.googleapis.com"
 }
 
+
 resource "google_container_cluster" "gke" {
   name                     = var.name
   location                 = var.location

@@ -1,9 +1,7 @@
-resource "google_service_account" "kubernetes" {
-  account_id = "kubernetes"
-}
+
 
 resource "google_container_node_pool" "node_pool" {
-  name       = var.name
+  name       = "${var.name}-node-group"
   cluster    = var.cluster_id
   node_count = var.node_count
 
@@ -19,7 +17,7 @@ resource "google_container_node_pool" "node_pool" {
   labels = var.labels
 
 
-    service_account = google_service_account.kubernetes.email
+    service_account = var.sa_email
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
@@ -53,7 +51,7 @@ resource "google_container_node_pool" "spot" {
       effect = "NO_SCHEDULE"
     }
 
-    service_account = google_service_account.kubernetes.email
+    service_account = var.sa_email
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]

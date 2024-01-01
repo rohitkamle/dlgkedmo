@@ -34,6 +34,10 @@ variable "gke_nodegroup_node_count" {
   type        = number
 }
 
+variable "gke_node_group_sa_roles" {
+  description = "Unique Project name"
+  type        = map(string)
+}
 
 
 

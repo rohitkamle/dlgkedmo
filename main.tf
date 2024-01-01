@@ -1,10 +1,10 @@
 module "vpc" {
-  source = "./modules/vpc"
+  source = "./modules/gcp/vpc"
   name = "${var.gcp_project}-vpc-${var.env}"
 }
 
 module "subnet" {
-  source = "./modules/subnet"
+  source = "./modules/gcp/subnet"
   name = "${var.gcp_project}-subnet-${var.env}"
   nework_id = module.vpc.id
   region = var.gcp_region
@@ -12,8 +12,22 @@ module "subnet" {
   depends_on = [ module.vpc ]
 }
 
+
+module "sa" {
+  source = "./modules/gcp/sa"
+  name = var.gke_cluster_name
+}
+
+
+module "project_iam_binding" {
+  source = "./modules/gcp/project_iam_binding"
+  project_id = var.gcp_project
+  role = var.gke_node_group_sa_roles
+  member_email = module.sa.email
+}
+
 module "gke" {
-  source = "./modules/gke"
+  source = "./modules/gcp/gke"
   project_id = var.gcp_project
   name = var.gke_cluster_name
   location = var.gcp_region
@@ -21,17 +35,19 @@ module "gke" {
   subnetwork = module.subnet.self_link
 }
 
+
 module "gke_nodegroup" {
-  source = "./modules/gke_nodegroup"
-  name = "${var.gcp_project}-gke-nodegroup-${var.env}"
+  source = "./modules/gcp/gke_nodegroup"
+  name = var.gke_cluster_name
   node_count = var.gke_nodegroup_node_count
   cluster_id =  module.gke.id
   labels = var.labels
+  sa_email = module.sa.email
   depends_on = [ module.gke ]
 }
 
 module "artifact_repo" {
-  source = "./modules/artifact_repo"
+  source = "./modules/gcp/artifact_repo"
   location = var.gcp_region
   name = "artifact-repo-${var.env}"
   labels = var.labels
@@ -39,7 +55,7 @@ module "artifact_repo" {
 
 
 module "router" {
-  source = "./modules/router"
+  source = "./modules/gcp/router"
   name = "${var.gcp_project}-router-${var.env}"
   region = var.gcp_region
   network_id = module.vpc.id
@@ -47,7 +63,7 @@ module "router" {
 }
 
 module "nat" {
-  source = "./modules/nat"
+  source = "./modules/gcp/nat"
   name = "${var.gcp_project}-nat-${var.env}"
   router_name = module.router.name
   region      = var.gcp_region
