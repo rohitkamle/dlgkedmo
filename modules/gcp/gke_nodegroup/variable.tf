@@ -22,7 +22,6 @@ variable "sa_email" {
 }
 
 
-
 variable "machine_type" {
   description = "machine_type id of the gke nodes"
    type        = string

@@ -21,8 +21,9 @@ module "sa" {
 
 module "project_iam_binding" {
   source = "./modules/gcp/project_iam_binding"
+  for_each = toset(var.gke_node_group_sa_roles)
   project_id = var.gcp_project
-  role = var.gke_node_group_sa_roles
+  role = var.each.value
   member_email = module.sa.email
 }
 
