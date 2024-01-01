@@ -1,10 +1,10 @@
 #### UPDATE BELOW DETAILS
 
 PROJECT_ID="fabled-era-408608"
+SA_NAME="dlgkedemosatf"
 WIF_POOL_NAME="dlwifpool"
 WIF_POOL_DISPLAY_NAME="DL DEMO WIF POOL"
 WIF_PROVIDER_NAME="dlwifprovider"
-SA_NAME="dlgkedemosatf"
 SA_DISPLAY_NAME="DL DEMO SERVICE ACCOUNT FOR GITHUB ACTION"
 GITHUB_REPO="rohitkamle/dlgkedmo"
 STORAGE_BUCKET_NAME="dlgkedemotfstatebucket"
@@ -20,6 +20,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA_
 gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com" --role="roles/storage.admin"
 gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com" --role "roles/compute.networkAdmin" 
 gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com" --role="roles/iam.serviceAccountAdmin"
+gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com" --role="roles/artifactregistry.admin"
 
 
 # CREATED MANAGED IDENTITY POOL AND PROVIDER

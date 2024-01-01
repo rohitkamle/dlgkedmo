@@ -30,6 +30,13 @@ module "gke_nodegroup" {
   depends_on = [ module.gke ]
 }
 
+module "artifact_repo" {
+  source = "./modules/artifact_repo"
+  location = var.gcp_region
+  name = "${var.gcp_project}-artifact-repo-${var.env}"
+  labels = var.labels
+}
+
 
 module "router" {
   source = "./modules/router"
