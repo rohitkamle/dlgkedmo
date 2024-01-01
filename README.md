@@ -28,13 +28,6 @@ Before running the deployment, ensure the following prerequisites are met:
      - `GKE_CLUSTER_NAME`: Name of the GKE cluster.
      - `TKSTATE_BUCKET_NAME`: Name of the GCS bucket for Terraform state.
 
-
-6. **Update hosts file to access grafana and nginx application using url**
-    - To access grafana which is pointed to host : `grafana.dlgkedemo.com`  and `nginx.dlgkedemo.com` , local host file need to update with the ingress IP Address
-    - For windows file location is `C:\Windows\System32\drivers\etc\hosts`  which can be open with notepad with Run As Administrator option
-    - For MAC Book file location is `/etc/hosts` can be open using sudo nano `sudo nano /etc/hosts` or  `sudo vim /etc/hosts`
-
-
 ## GitHub Actions Workflow
 The deployment is triggered by the GitHub Actions workflow defined in `.github/workflows/terraform.yaml`. This workflow performs the following steps:
 
@@ -43,3 +36,8 @@ The deployment is triggered by the GitHub Actions workflow defined in `.github/w
 3. Authenticates with Google Cloud using the provided Workload Identity Provider.
 4. Initializes and applies the Terraform configuration.
 
+
+### This repository only consist the code to deploy Kubernetes Cluster using Terraform, installation for NGINX INGRESS CONTROLLER and SAMPPLE NGINX APPLICATION code is stored in below mentioned repositories
+
+- NGINX INGRESS CONTROLLER AND MONITORING TOOL (PROMETHEUS AND GRAFANA DEPLOYMENT CODE) - `https://github.com/rohitkamle/dlgkeadmin` 
+- NGINX APPLICATION CODE - `https://github.com/rohitkamle/dlgkeadmin` 
