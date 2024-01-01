@@ -1,8 +1,3 @@
-variable "project_id" {
-  description = "project_id of for enabling container api"
-  type        = string
-}
-
 variable "name" {
   description = "Name of Artifcate Registry"
   type        = string
@@ -21,4 +16,7 @@ variable "format" {
 }
 
 
-
+variable "labels" {
+  description = "Labels for the instance"
+  type        = map(string)
+}
