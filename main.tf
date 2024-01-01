@@ -33,7 +33,7 @@ module "gke_nodegroup" {
 module "artifact_repo" {
   source = "./modules/artifact_repo"
   location = var.gcp_region
-  name = "${var.gcp_project}-artifact-repo-${var.env}"
+  name = "artifact-repo-${var.env}"
   labels = var.labels
 }
 
