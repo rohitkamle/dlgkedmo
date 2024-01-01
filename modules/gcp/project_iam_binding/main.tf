@@ -1,5 +1,5 @@
-resource "google_project_iam_binding" "artifact_registry_reader_binding" {
-  project = var._project_id
+resource "google_project_iam_binding" "binding" {
+  project = var.project_id
   role    = var.role
 
   members = [
