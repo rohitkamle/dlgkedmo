@@ -54,3 +54,4 @@ jobs:
         run: terraform apply -auto-approve -var-file=$TFVARS_PATH -var="gke_cluster_name=$GKE_CLUSTER_NAME"
         env:
           TFVARS_PATH: ${{ env.TFVARS_PATH }}
+
