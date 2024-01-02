@@ -44,7 +44,7 @@ module "gke_nodegroup" {
   cluster_id =  module.gke.id
   labels = var.labels
   sa_email = module.sa.email
-  depends_on = [ module.gke ]
+  depends_on = [ module.gke, module.sa ]
 }
 
 module "artifact_repo" {
